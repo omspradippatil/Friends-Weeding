@@ -36,12 +36,26 @@
             100% { box-shadow: 0 0 5px gold; }
         }
         
+        @keyframes sparkle {
+            0%, 100% { text-shadow: 0 0 5px gold, 0 0 10px gold; }
+            50% { text-shadow: 0 0 15px #FFD700, 0 0 20px #FFD700; }
+        }
+        
+        /* Add smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+        
+        body {
+            overflow-x: hidden;
+        }
+        
         .om {
             animation: pulse 2s infinite ease-in-out;
         }
         
         .names {
-            animation: fadeIn 1.5s ease-out;
+            animation: fadeIn 1.5s ease-out, sparkle 3s infinite ease-in-out;
         }
         
         .invite-text {
@@ -64,6 +78,20 @@
             animation: float 4s infinite ease-in-out;
         }
         
+        /* Add fancy golden floral background */
+        .container::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://www.transparenttextures.com/patterns/floral-pattern.png');
+            opacity: 0.1;
+            z-index: -1;
+            pointer-events: none;
+        }
+        
         .flower.top-left {
             animation-delay: 0.5s;
         }
@@ -81,7 +109,66 @@
         }
         
         .invitation-image img {
-            animation: pulse 5s infinite ease-in-out;
+            /* Remove constant pulse animation */
+            border: 5px solid rgba(210, 160, 90, 0.5);
+            transition: all 0.5s ease;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+            transform-origin: center;
+        }
+        
+        .invitation-image img:hover {
+            transform: scale(1.03);
+            border-color: rgba(210, 160, 90, 0.8);
+            box-shadow: 0 8px 25px rgba(210, 160, 90, 0.4);
+            filter: brightness(1.05);
+        }
+
+        .invitation-image {
+            position: relative;
+            overflow: hidden;
+            max-width: 100%;
+            margin: 30px 0;
+        }
+        
+        .invitation-image::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle, transparent, rgba(210, 160, 90, 0.1));
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            z-index: 1;
+            pointer-events: none;
+        }
+        
+        .invitation-image:hover::before {
+            opacity: 1;
+        }
+        
+        /* Add corner glow on hover */
+        .invitation-image::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: 
+                radial-gradient(circle at top left, rgba(210, 160, 90, 0.5) 0%, transparent 15%),
+                radial-gradient(circle at top right, rgba(210, 160, 90, 0.5) 0%, transparent 15%),
+                radial-gradient(circle at bottom left, rgba(210, 160, 90, 0.5) 0%, transparent 15%),
+                radial-gradient(circle at bottom right, rgba(210, 160, 90, 0.5) 0%, transparent 15%);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            pointer-events: none;
+            z-index: 2;
+        }
+        
+        .invitation-image:hover::after {
+            opacity: 1;
         }
         
         .marathi-quote {
@@ -94,6 +181,7 @@
             border-bottom: 1px solid rgba(210, 160, 90, 0.5);
             color: #8B4513;
             animation: fadeIn 2.5s ease-out;
+            background: linear-gradient(to right, transparent, rgba(255,215,0,0.1), transparent);
         }
         
         /* Mobile Responsiveness */
@@ -180,15 +268,11 @@
     </style>
 </head>
 <body>
-    <div class="music-control">
-        <audio id="bgMusic" loop autoplay>
-            <source src="Mangalashtaka.mp3" type="audio/mpeg">
-            Your browser does not support the audio element.
-        </audio>
-        <button id="musicToggle" onclick="toggleMusic()">
-            <span class="music-icon">♫</span> Pause Music
-        </button>
-    </div>
+    <!-- Hidden audio that plays continuously -->
+    <audio id="bgMusic" loop autoplay preload="auto">
+        <source src="Mangalashtaka.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
+    </audio>
 
     <div class="container">
         <div class="border-design"></div>
@@ -227,43 +311,71 @@
     </div>
 
     <script>
-        // Autoplay music when page loads
+        // Force music to play continuously with multiple approaches
         document.addEventListener('DOMContentLoaded', function() {
             const music = document.getElementById("bgMusic");
-            const button = document.getElementById("musicToggle");
             
-            // Try to play music automatically
-            const playPromise = music.play();
+            // Try to play music immediately
+            playMusic();
             
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    // Autoplay started
-                    button.innerHTML = '<span class="music-icon">♫</span> Pause Music';
-                })
-                .catch(error => {
-                    // Autoplay was prevented
-                    button.innerHTML = '<span class="music-icon">♫</span> Play Music';
-                    console.log("Autoplay prevented by browser");
+            // Set up event listeners to start music on first interaction
+            document.addEventListener('click', playMusic, { once: true });
+            document.addEventListener('touchstart', playMusic, { once: true });
+            document.addEventListener('scroll', playMusic, { once: true });
+            document.addEventListener('keydown', playMusic, { once: true });
+            
+            // Try to play music at intervals until successful
+            let playAttempt = setInterval(function() {
+                music.play()
+                    .then(() => {
+                        clearInterval(playAttempt);
+                    })
+                    .catch(error => {
+                        console.log("Waiting for user interaction to enable autoplay");
+                    });
+            }, 2500);
+            
+            function playMusic() {
+                music.play()
+                    .then(() => {
+                        console.log("Music playing");
+                        
+                        // Keep checking that music is playing
+                        setInterval(function() {
+                            if(music.paused) {
+                                music.play();
+                            }
+                        }, 1000);
+                    })
+                    .catch(error => {
+                        console.log("Could not autoplay: ", error);
+                    });
+            }
+            
+            // Add scroll animation
+            const addScrollAnimation = function() {
+                const elements = document.querySelectorAll('.invitation-card, .header, .border-design');
+                
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            entry.target.style.opacity = '1';
+                            entry.target.style.transform = 'translateY(0)';
+                        }
+                    });
+                }, { threshold: 0.1 });
+                
+                elements.forEach(element => {
+                    element.style.opacity = '0';
+                    element.style.transform = 'translateY(20px)';
+                    element.style.transition = 'opacity 1s ease, transform 1s ease';
+                    observer.observe(element);
                 });
-            }
+            };
             
-            // Preload the invitation image
-            const img = new Image();
-            img.src = 'pataraka.jpg';
+            // Initialize scroll animations
+            addScrollAnimation();
         });
-        
-        function toggleMusic() {
-            var music = document.getElementById("bgMusic");
-            var button = document.getElementById("musicToggle");
-            
-            if (music.paused) {
-                music.play();
-                button.innerHTML = '<span class="music-icon">♫</span> Pause Music';
-            } else {
-                music.pause();
-                button.innerHTML = '<span class="music-icon">♫</span> Play Music';
-            }
-        }
     </script>
 </body>
 </html>
