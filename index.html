@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pratiksha & Niket's Wedding Invitation</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Rozha+One&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        /* Animation styles */
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.8; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        
+        @keyframes rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        @keyframes fadeIn {
+            0% { opacity: 0; transform: translateY(20px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        @keyframes shimmer {
+            0% { box-shadow: 0 0 5px gold; }
+            50% { box-shadow: 0 0 20px gold, 0 0 30px goldenrod; }
+            100% { box-shadow: 0 0 5px gold; }
+        }
+        
+        .om {
+            animation: pulse 2s infinite ease-in-out;
+        }
+        
+        .names {
+            animation: fadeIn 1.5s ease-out;
+        }
+        
+        .invite-text {
+            animation: fadeIn 2s ease-out;
+        }
+        
+        .ganesh {
+            animation: pulse 3s infinite ease-in-out;
+        }
+        
+        .border-design {
+            animation: shimmer 3s infinite;
+        }
+        
+        .diya {
+            animation: shimmer 2s infinite alternate;
+        }
+        
+        .flower {
+            animation: float 4s infinite ease-in-out;
+        }
+        
+        .flower.top-left {
+            animation-delay: 0.5s;
+        }
+        
+        .flower.top-right {
+            animation-delay: 1s;
+        }
+        
+        .flower.bottom-left {
+            animation-delay: 1.5s;
+        }
+        
+        .flower.bottom-right {
+            animation-delay: 2s;
+        }
+        
+        .invitation-image img {
+            animation: pulse 5s infinite ease-in-out;
+        }
+        
+        .marathi-quote {
+            font-family: 'Rozha One', serif;
+            text-align: center;
+            font-size: 1.2rem;
+            margin: 2rem 0;
+            padding: 1rem;
+            border-top: 1px solid rgba(210, 160, 90, 0.5);
+            border-bottom: 1px solid rgba(210, 160, 90, 0.5);
+            color: #8B4513;
+            animation: fadeIn 2.5s ease-out;
+        }
+        
+        /* Mobile Responsiveness */
+        @media only screen and (max-width: 768px) {
+            .container {
+                padding: 15px;
+            }
+            
+            .names {
+                font-size: 2.5rem;
+            }
+            
+            .and {
+                font-size: 2rem;
+            }
+            
+            .om {
+                font-size: 2.5rem;
+            }
+            
+            .invitation-card {
+                padding: 20px;
+            }
+            
+            .invite {
+                font-size: 2rem;
+            }
+            
+            .marathi-quote {
+                font-size: 1rem;
+                padding: 0.8rem;
+                margin: 1.5rem 0;
+            }
+            
+            .invite-msg {
+                font-size: 0.9rem;
+            }
+            
+            .music-control {
+                top: 10px;
+                right: 10px;
+            }
+            
+            #musicToggle {
+                padding: 6px 12px;
+                font-size: 0.8rem;
+            }
+        }
+        
+        @media only screen and (max-width: 480px) {
+            .names {
+                font-size: 2rem;
+            }
+            
+            .and {
+                font-size: 1.5rem;
+            }
+            
+            .om {
+                font-size: 2rem;
+            }
+            
+            .invite {
+                font-size: 1.8rem;
+            }
+            
+            .ganesh {
+                font-size: 1.2rem;
+            }
+            
+            .diya, .flower {
+                width: 30px;
+                height: 30px;
+            }
+            
+            .invitation-card {
+                padding: 15px;
+            }
+            
+            .border-design {
+                height: 6px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="music-control">
+        <audio id="bgMusic" loop autoplay>
+            <source src="Mangalashtaka.mp3" type="audio/mpeg">
+            Your browser does not support the audio element.
+        </audio>
+        <button id="musicToggle" onclick="toggleMusic()">
+            <span class="music-icon">♫</span> Pause Music
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="border-design"></div>
+        
+        <div class="header">
+            <div class="om">ॐ</div>
+            <h1 class="names">Pratiksha <span class="and">&</span> Niket</h1>
+            <div class="invite-text">Together with their families</div>
+        </div>
+        
+        <div class="invitation-card">
+            <div class="card-content">
+                <div class="ganesh">॥ श्री गणेशाय नमः ॥</div>
+                <h2 class="invite">Wedding Invitation</h2>
+                <p class="invite-msg">We request the honor of your presence and blessings on the auspicious occasion of our wedding</p>
+                
+                <div class="marathi-quote">
+                    <div>"शुभ विवाह सोहळा"</div>
+                    <div>"दोन मने, एक प्रेम, एक जीवन, एक समर्पण"</div>
+                    <div>(Two hearts, one love, one life, one commitment)</div>
+                </div>
+                
+                <div class="invitation-image">
+                    <img src="pataraka.jpg" alt="Wedding Invitation" id="patrika">
+                </div>
+            </div>
+        </div>
+        
+        <div class="border-design"></div>
+        <div class="diya left"></div>
+        <div class="diya right"></div>
+        <div class="flower top-left"></div>
+        <div class="flower top-right"></div>
+        <div class="flower bottom-left"></div>
+        <div class="flower bottom-right"></div>
+    </div>
+
+    <script>
+        // Autoplay music when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            const music = document.getElementById("bgMusic");
+            const button = document.getElementById("musicToggle");
+            
+            // Try to play music automatically
+            const playPromise = music.play();
+            
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // Autoplay started
+                    button.innerHTML = '<span class="music-icon">♫</span> Pause Music';
+                })
+                .catch(error => {
+                    // Autoplay was prevented
+                    button.innerHTML = '<span class="music-icon">♫</span> Play Music';
+                    console.log("Autoplay prevented by browser");
+                });
+            }
+            
+            // Preload the invitation image
+            const img = new Image();
+            img.src = 'pataraka.jpg';
+        });
+        
+        function toggleMusic() {
+            var music = document.getElementById("bgMusic");
+            var button = document.getElementById("musicToggle");
+            
+            if (music.paused) {
+                music.play();
+                button.innerHTML = '<span class="music-icon">♫</span> Pause Music';
+            } else {
+                music.pause();
+                button.innerHTML = '<span class="music-icon">♫</span> Play Music';
+            }
+        }
+    </script>
+</body>
+</html>
