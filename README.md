@@ -1,1 +1,1 @@
-live preview https://niketpratiksha.netlify.app
+live preview https://omspradippatil.github.io/Friends-Weeding/
